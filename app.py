@@ -64,4 +64,4 @@ def echo(message: EchoMessage):
     echo_message = message.message if message.message else "No message provided"
     weather_forcast = get_weather_info(area_dict[echo_message]["group"])
     snow_amount = get_local_amount(area_dict[echo_message]["locacion_id"])
-    return {"message": f"積雪量: {snow_amount} 天気予報: {wheather_forcast}"}
+    return {"snow_amount": snow_amount, "weather_forcast": weather_forcast}

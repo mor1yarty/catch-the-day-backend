@@ -37,27 +37,27 @@ def get_weather_info(selected_area):
             max_temp = f"{max(temp_list)} ℃" if len(temp_list) > 0 else "No Data."
             min_temp = f"{min(temp_list)} ℃" if len(temp_list) > 0 else "No Data."
             temp_dict[response_daily[2]["areas"][area_index]["area"]["name"]] = {
-                "最高気温": max_temp,
-                "最低気温": min_temp
+                "max_temp": max_temp,
+                "min_temp": min_temp
             }
         return temp_dict
     
     # 集計結果を格納する辞書
     weather_dict = {
         "北部":{
-            "天気": response_daily[0]["areas"][0]["weathers"][1].replace("　", " "),
-            "降水確率": rain_func(0),
-            "気温": temp_func([0])
+            "weather": response_daily[0]["areas"][0]["weathers"][1].replace("　", " "),
+            "rain_probability": rain_func(0),
+            "temparture": temp_func([0])
         },
         "中部":{
-            "天気": response_daily[0]["areas"][1]["weathers"][1].replace("　", " "),
-            "降水確率": rain_func(1),
-            "気温": temp_func([1, 2, 4])
+            "weather": response_daily[0]["areas"][1]["weathers"][1].replace("　", " "),
+            "rain_probability": rain_func(1),
+            "temparture": temp_func([1, 2, 4])
         },
         "南部":{
-            "天気": response_daily[0]["areas"][2]["weathers"][1].replace("　", " "),
-            "降水確率": rain_func(2),
-            "気温": temp_func([3])
+            "weather": response_daily[0]["areas"][2]["weathers"][1].replace("　", " "),
+            "rain_probability": rain_func(2),
+            "temparture": temp_func([3])
         },
     }
     return weather_dict[selected_area]
