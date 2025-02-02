@@ -3,11 +3,6 @@ import requests
 import pandas as pd
 from datetime import datetime, timedelta
 
-# ダウンロードデータの保存先ディレクトリ
-save_dir = "cached_data"
-if not os.path.exists(save_dir):
-    os.makedirs(save_dir)
-
 def set_url(day_before):
     # 昨日の日付をMMDD形式で取得
     yesterday = datetime.now() - timedelta(days=day_before)
@@ -19,7 +14,7 @@ def set_url(day_before):
 
 # CSVファイルを取得する関数
 def fetch_csv(url):
-    filename = os.path.join("cached_data", url.split("/")[-1])
+    filename = os.path.join("tmp", url.split("/")[-1])
     # ファイルがすでに存在すればそのデータを使用
     if not os.path.exists(filename):
         response = requests.get(url)

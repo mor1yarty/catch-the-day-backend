@@ -34,9 +34,6 @@ image_path = "src/the_day.jpg"
 with open(image_path, "rb") as img_file:
     base64_image = base64.b64encode(img_file.read()).decode("utf-8")
 
-# キャッシュデータ
-cached_area = None
-
 @app.get("/")
 def hello():
     return {"message": "FastAPI hello!"}
