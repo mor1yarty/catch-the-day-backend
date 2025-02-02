@@ -46,12 +46,6 @@ def hello_world():
     }
     return response_data
 
-@app.get("/api/multiply/{id}")
-def multiply(id: int):
-    print("multiply")
-    doubled_value = id * 2
-    return {"doubled_value": doubled_value}
-
 @app.post("/api/echo")
 def echo(message: EchoMessage):
     print("echo")
