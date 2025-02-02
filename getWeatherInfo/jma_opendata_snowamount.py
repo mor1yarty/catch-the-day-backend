@@ -44,7 +44,7 @@ def get_local_amount(location_id):
         total_amount_df = fetch_csv(total_amount_url)
         recent_amount_df = fetch_csv(recent_amount_url)
     local_total_amount = total_amount_df[total_amount_df["観測所番号"] == location_id]["累積降雪量（cm）"].values[0]
-    local_recent_amount = recent_amount_df[recent_amount_df["観測所番号"] == location_id][f"{date_str[2:]}日の最大値(cm)"].values[0]
+    local_recent_amount = recent_amount_df[recent_amount_df["観測所番号"] == location_id][f"{int(date_str[2:])}日の最大値(cm)"].values[0]
     local_omount_dict = {
         "total": f"{local_total_amount}cm",
         "recent": f"{local_recent_amount}cm"
