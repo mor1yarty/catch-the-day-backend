@@ -62,6 +62,6 @@ def echo(message: EchoMessage):
         raise HTTPException(status_code=400, detail="Invalid JSON")
 
     echo_message = message.message if message.message else "No message provided"
-    wheather_forcast = get_weather_info(area_dict[echo_message]["group"])
+    weather_forcast = get_weather_info(area_dict[echo_message]["group"])
     snow_amount = get_local_amount(area_dict[echo_message]["locacion_id"])
     return {"message": f"積雪量: {snow_amount} 天気予報: {wheather_forcast}"}
