@@ -1,30 +1,26 @@
-import os
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
+import io
 
 def set_url(day_before):
     # 昨日の日付をMMDD形式で取得
     yesterday = datetime.now() - timedelta(days=day_before)
     date_str = yesterday.strftime("%m%d")
-    # CSVのURLとローカルファイル名を設定
+    # CSVのURLを設定
     total_amount_url = f"https://www.data.jma.go.jp/stats/data/mdrr/snc_rct/alltable/smsnd_sm{date_str}.csv"
     recent_amount_url = f"https://www.data.jma.go.jp/stats/data/mdrr/snc_rct/alltable/snd72h{date_str}.csv"
     return total_amount_url, recent_amount_url, date_str
 
-# CSVファイルを取得する関数
+# CSVデータを取得する関数
 def fetch_csv(url):
-    filename = os.path.join("tmp", url.split("/")[-1])
-    # ファイルがすでに存在すればそのデータを使用
-    if not os.path.exists(filename):
-        response = requests.get(url)
-        # HTTPエラーがあれば例外を発生させる
-        response.raise_for_status()
-        # ファイルの書き込み
-        with open(filename, "wb") as f:
-            f.write(response.content)
-    # CSVファイルをデータフレームに読み込む
-    df = pd.read_csv(filename, encoding='shift_jis')
+    response = requests.get(url)
+    # HTTPエラーがあれば例外を発生させる
+    response.raise_for_status()
+    # 取得したCSVデータを文字列に変換（shift_jisエンコーディング）
+    content = response.content.decode('shift_jis')
+    # 文字列からDataFrameに読み込む
+    df = pd.read_csv(io.StringIO(content))
     df.fillna(0, inplace=True)
     return df
 
@@ -34,7 +30,7 @@ def get_local_amount(location_id):
         total_amount_url, recent_amount_url, date_str = set_url(1)
         total_amount_df = fetch_csv(total_amount_url)
         recent_amount_df = fetch_csv(recent_amount_url)
-    except:
+    except Exception:
         total_amount_url, recent_amount_url, date_str = set_url(2)
         total_amount_df = fetch_csv(total_amount_url)
         recent_amount_df = fetch_csv(recent_amount_url)
@@ -48,6 +44,6 @@ def get_local_amount(location_id):
 
 # テスト用のコード
 if __name__ == "__main__":
-    sapporo_id = 48491
-    local_amount = get_local_amount(sapporo_id)
+    location_id = 48141
+    local_amount = get_local_amount(location_id)
     print(local_amount)
