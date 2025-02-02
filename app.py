@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from getWeatherInfo.jma_opendata_snowamount import get_local_amount
@@ -48,11 +48,22 @@ def hello_world():
 
 @app.post("/api/echo")
 def echo(message: EchoMessage):
-    print("echo")
-    if not message:
-        raise HTTPException(status_code=400, detail="Invalid JSON")
+    # messageフィールドが空の場合のチェック
+    if not message.message:
+        raise HTTPException(status_code=400, detail="Invalid JSON: 'message'フィールドに値を指定してください。")
 
-    echo_message = message.message if message.message else "No message provided"
+    # 前後の空白を除去
+    echo_message = message.message.strip()
+
+    # 入力がarea_dictに存在するかチェック
+    if echo_message not in area_dict:
+        allowed = "、".join(area_dict.keys())
+        raise HTTPException(
+            status_code=400,
+            detail=f"無効なエリアです。以下のいずれかを選んでください: {allowed}"
+        )
+
+    # 有効なエリアの場合、天気情報と雪量情報を取得する
     weather_forcast = get_weather_info(area_dict[echo_message]["group"])
     snow_amount = get_local_amount(area_dict[echo_message]["locacion_id"])
     return {"snow_amount": snow_amount, "weather_forcast": weather_forcast}
