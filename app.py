@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from getWeatherInfo.jma_opendata_snowamount import get_local_amount
 from getWeatherInfo.jma_api_weatherforcast import get_weather_info
+import base64
 
 app = FastAPI()
 
@@ -28,6 +29,11 @@ area_dict = {
     "木曽":{"group":"南部", "locacion_id":48531},
 }
 
+# 画像をBase64に変換
+image_path = "src/the_day.jpg"
+with open(image_path, "rb") as img_file:
+    base64_image = base64.b64encode(img_file.read()).decode("utf-8")
+
 # キャッシュデータ
 cached_area = None
 
@@ -37,7 +43,11 @@ def hello():
 
 @app.get("/api/hello")
 def hello_world():
-    return {"message": "Hello World by FastAPI"}
+    response_data = {
+        "image": base64_image,  # Base64エンコードした画像データ
+        "message": "天気は雲ひとつない快晴で、雪面はふかふかのパウダースノー。\n一見すると相反するこのコンディションとは、シーズンを通しても片手で数えるほどしか出会えない。\nそんな最高の1日をスノーボーダーは「THE DAY.」と表現する。"
+    }
+    return response_data
 
 @app.get("/api/multiply/{id}")
 def multiply(id: int):
