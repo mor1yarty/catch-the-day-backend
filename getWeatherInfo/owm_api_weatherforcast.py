@@ -2,6 +2,8 @@
 import requests
 from datetime import datetime, timedelta
 import os
+# from dotenv import load_dotenv
+# load_dotenv
 
 OWM_API_KEY = os.getenv("OWM_API_KEY")
 
