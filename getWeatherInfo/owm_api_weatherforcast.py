@@ -1,10 +1,8 @@
 # -*- coding:utf-8 -*-
 import requests
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
 import os
 
-load_dotenv()
 OWM_API_KEY = os.getenv("OWM_API_KEY")
 
 # 明日の日付をMMDD形式で取得
