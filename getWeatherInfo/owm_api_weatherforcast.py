@@ -2,10 +2,10 @@
 import requests
 from datetime import datetime, timedelta
 import os
-# from dotenv import load_dotenv
-# load_dotenv
-
-OWM_API_KEY = os.getenv("OWM_API_KEY")
+from dotenv import load_dotenv
+if os.environ.get("APP_ENV", "development") == "development":
+    load_dotenv()
+OWM_API_KEY = os.environ.get("OWM_API_KEY")
 
 # 明日の日付をMMDD形式で取得
 tomorrow = datetime.now() + timedelta(days=1)
