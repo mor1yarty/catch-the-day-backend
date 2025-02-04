@@ -43,9 +43,12 @@ def get_weather_info(lat, lon, days):
                 "snow": f'{weather["snow"]["3h"]}mm' if "snow" in weather else "0mm",
                 "icon": weather["weather"][0]["icon"]
             }
-    del weather_tomorrow_json["00:00"], weather_tomorrow_json["03:00"]
+    if "00:00" in weather_tomorrow_json:
+        del weather_tomorrow_json["00:00"]
+    if "03:00" in weather_tomorrow_json:
+        del weather_tomorrow_json["03:00"]
     return weather_tomorrow_json
 
 if __name__ == "__main__":
-    weahter_info = get_weather_info(36, 138 ,1)
+    weahter_info = get_weather_info(36, 138 ,0)
     print(weahter_info)
